@@ -17,25 +17,29 @@
 
 package org.apache.seatunnel.common.config;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommonTest {
 
     static {
-        Common.setDeployMode("client");
+        Common.setDeployMode(DeployMode.CLIENT);
     }
 
     @Test
     public void appLibDir() {
-        assertEquals(Common.appRootDir().toString() + File.separator + "lib", Common.appLibDir().toString());
+        assertEquals(
+                Common.appRootDir().toString() + File.separator + "starter",
+                Common.appStarterDir().toString());
     }
 
     @Test
     public void pluginTarFile() {
-        assertEquals(Common.appRootDir().toString() + File.separator + "plugins.tar.gz", Common.pluginTarball().toString());
+        assertEquals(
+                Common.appRootDir().toString() + File.separator + "plugins.tar.gz",
+                Common.pluginTarball().toString());
     }
 }

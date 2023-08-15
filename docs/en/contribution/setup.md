@@ -20,10 +20,10 @@ have installed the following software:
 
 ### Clone the Source Code
 
-First of all, you need to clone the SeaTunnel source code from [GitHub](https://github.com/apache/incubator-seatunnel).
+First of all, you need to clone the SeaTunnel source code from [GitHub](https://github.com/apache/seatunnel).
 
 ```shell
-git clone git@github.com:apache/incubator-seatunnel.git
+git clone git@github.com:apache/seatunnel.git
 ```
 
 ### Install Subproject Locally
@@ -33,6 +33,24 @@ Otherwise, your code could not start in JetBrains IntelliJ IDEA correctly.
 
 ```shell
 ./mvnw install -Dmaven.test.skip
+```
+
+### Building seaTunnel from source
+
+After you install the maven, you can use the follow command to compile and package.
+
+```
+mvn clean package -pl seatunnel-dist -am -Dmaven.test.skip=true
+```
+
+### Building sub module
+
+If you want to build submodules separately,you can use the follow command to compile and package.
+
+```ssh
+# This is an example of building the redis connector separately
+
+ mvn clean package -pl seatunnel-connectors-v2/connector-redis -am -DskipTests -T 1C
 ```
 
 ### Install JetBrains IDEA Scala Plugin
@@ -46,30 +64,39 @@ See [install plugins for IDEA](https://www.jetbrains.com/help/idea/managing-plug
 Before running the following example, you should also install JetBrains IntelliJ IDEA's [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok).
 See [install plugins for IDEA](https://www.jetbrains.com/help/idea/managing-plugins.html#install-plugins) if you want to.
 
+### Code Style
+
+Apache SeaTunnel uses `Spotless` for code style and formatting checks. You could run the following command and `Spotless` will automatically fix the code style and formatting errors for you:
+
+```shell
+./mvnw spotless:apply
+```
+
+You could copy the `pre-commit hook` file `/tools/spotless_check/pre-commit.sh` to your `.git/hooks/` directory so that every time you commit your code with `git commit`, `Spotless` will automatically fix things for you.
+
 ## Run Simple Example
 
 After all the above things are done, you just finish the environment setup and can run an example we provide to you out
 of box. All examples are in module `seatunnel-examples`, you could pick one you are interested in, [running or debugging
 it in IDEA](https://www.jetbrains.com/help/idea/run-debug-configuration.html) as you wish.
 
-Here we use `seatunnel-examples/seatunnel-flink-examples/src/main/java/org/apache/seatunnel/example/flink/LocalFlinkExample.java`
+Here we use `seatunnel-examples/seatunnel-flink-connector-v2-example/src/main/java/org/apache/seatunnel/example/flink/v2/SeaTunnelApiExample.java`
 as an example, when you run it successfully you could see the output as below:
 
-
 ```log
-+I[Gary, 1647423592505]
-+I[Kid Xiong, 1647423593510]
-+I[Ricky Huo, 1647423598537]
++I[Ricky Huo, 71]
++I[Gary, 12]
++I[Ricky Huo, 93]
 ...
 ...
-+I[Gary, 1647423597533]
++I[Ricky Huo, 83]
 ```
 
 ## What's More
 
 All our examples use simple source and sink to make it less dependent and easy to run. You can change the example configuration
 in `resources/examples`. You could change your configuration as below, if you want to use PostgreSQL as the source and
-sink to console. 
+sink to console.
 
 ```conf
 env {
@@ -89,3 +116,4 @@ sink {
   ConsoleSink {}
 }
 ```
+

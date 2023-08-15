@@ -18,30 +18,35 @@
 package org.apache.seatunnel.common.config;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public enum DeployMode {
+    /** Spark */
     CLIENT("client"),
     CLUSTER("cluster"),
-    ;
 
-    private static final Map<String, DeployMode> NAME_MAP = Arrays.stream(DeployMode.values())
-        .collect(HashMap::new, (map, deployMode) -> map.put(deployMode.getName(), deployMode), Map::putAll);
+    /** Flink */
+    RUN("run"),
+    RUN_APPLICATION("run-application");
 
-    private final String name;
+    private final String deployMode;
 
-    DeployMode(String name) {
-        this.name = name;
+    DeployMode(String deployMode) {
+        this.deployMode = deployMode;
     }
 
-    public String getName() {
-        return name;
+    public String getDeployMode() {
+        return deployMode;
     }
 
-    public static Optional<DeployMode> from(String name) {
-        return Optional.ofNullable(NAME_MAP.get(name));
-    }
+    private static final Map<String, DeployMode> NAME_MAP =
+            Arrays.stream(DeployMode.values())
+                    .collect(Collectors.toMap(DeployMode::getDeployMode, Function.identity()));
 
+    public static Optional<DeployMode> from(String deployMode) {
+        return Optional.ofNullable(NAME_MAP.get(deployMode.toLowerCase()));
+    }
 }

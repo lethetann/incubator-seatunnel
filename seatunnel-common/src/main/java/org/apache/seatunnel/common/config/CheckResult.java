@@ -28,20 +28,12 @@ public class CheckResult {
 
     private String msg;
 
-    /**
-     * Do not call this constructor directly,
-     * please use {@link #success} or {@link #error(String)} instead,
-     * will be private in the future
-     */
-    @Deprecated
-    public CheckResult(boolean success, String msg) {
+    private CheckResult(boolean success, String msg) {
         this.success = success;
         this.msg = msg;
     }
 
-    /**
-     * @return a successful instance of CheckResult
-     */
+    /** @return a successful instance of CheckResult */
     public static CheckResult success() {
         return SUCCESS;
     }
@@ -53,5 +45,4 @@ public class CheckResult {
     public static CheckResult error(String msg) {
         return new CheckResult(false, msg);
     }
-
 }
